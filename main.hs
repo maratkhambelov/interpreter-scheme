@@ -300,6 +300,7 @@ parseComplex = do
 parseExpr :: Parser LispVal
 parseExpr =
   try parseComplex
+    <|> try parseQuoted
     <|> try parseFloat
     <|> try parseRatio
     <|> try parseNumber
@@ -545,6 +546,9 @@ makeFunc varargs env params body = return $ Func (map showVal params) varargs bo
 makeNormalFunc = makeFunc Nothing
 
 makeVarArgs = makeFunc . Just . showVal
+
+
+
 
 flushStr :: String -> IO ()
 flushStr str = putStr str >> hFlush stdout
